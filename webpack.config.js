@@ -1,10 +1,18 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+const PATHS = {
+  app: path.resolve(__dirname, 'app'),
+  build: path.resolve(__dirname, 'build')
+}
 
 const config = {
-  entry: './src/index.js',
+  entry: {
+    app: PATHS.app
+  },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: PATHS.build,
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -25,7 +33,12 @@ const config = {
         use: ['xml-loader']
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Webpack Review'
+    })
+  ]
 }
 
 module.exports = config

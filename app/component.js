@@ -1,9 +1,8 @@
 import _ from 'lodash'
 import './style.css'
 import icon from './like.png'
-import data from './data.xml'
 
-function component () {
+function Component () {
   const el = document.createElement('div')
   el.innerHTML = _.join(['webpack', 'review'], ' ')
   el.classList.add('hello')
@@ -14,6 +13,4 @@ function component () {
   return el
 }
 
-console.log(data)
-
-document.body.appendChild(component())
+export default Component
