@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --env production",
+    "start": "webpack-dev-server --env development"
   },
   "author": "",
   "license": "ISC",
@@ -14,7 +15,8 @@
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.29.0",
     "style-loader": "^0.18.2",
-    "webpack": "^3.0.0"
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.0"
   },
   "dependencies": {
     "lodash": "^4.17.4",
