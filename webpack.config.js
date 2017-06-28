@@ -1,5 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const merge = require('webpack-merge')
+const parts = require('./webpack.parts')
 
 const PATHS = {
   app: path.resolve(__dirname, 'app'),
@@ -41,27 +43,20 @@ const commonConfig = {
   ]
 }
 
-const productionConfig = () => commonConfig
+const productionConfig = commonConfig
 
-const developmentConfig = () => {
-  const config = {
-    devServer: {
-      historyApiFallback: true,
-      stats: 'errors-only',
-      host: process.env.HOST, // Defaults to 'localhost'
-      port: process.env.PORT // Defaults to 8080
-    }
-  }
-  return Object.assign(
-    {},
-    commonConfig,
-    config
-  )
-}
+const developmentConfig = merge(
+  commonConfig,
+  parts.devServer({
+    host: process.env.HOST, // Defaults to 'localhost'
+    port: process.env.PORT  // Defaults to 8080
+  }),
+  parts.lintJavaScript({
+    options: { emitWarning: true },
+    include: PATHS.app
+  })
+)
 
-module.exports = (env) => {
-  if (env === 'production') {
-    return productionConfig()
-  }
-  return developmentConfig()
-}
+module.exports = (env) => (
+  env === 'production' ? productionConfig : developmentConfig
+)
