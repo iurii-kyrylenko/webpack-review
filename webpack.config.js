@@ -19,10 +19,6 @@ const commonConfig = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      },
-      {
         test: /\.(png|jpg|swg|gif)$/,
         use: ['file-loader']
       },
@@ -43,10 +39,14 @@ const commonConfig = {
   ]
 }
 
-const productionConfig = commonConfig
+const productionConfig = merge(
+  commonConfig,
+  parts.loadCSS()
+)
 
 const developmentConfig = merge(
   commonConfig,
+  parts.loadCSS(),
   parts.devServer({
     host: process.env.HOST, // Defaults to 'localhost'
     port: process.env.PORT  // Defaults to 8080
