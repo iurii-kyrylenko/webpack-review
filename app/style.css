@@ -1,3 +1,8 @@
+body {
+  background: cornsilk;
+  display: flex;
+}
+
 @font-face {
   font-family: 'MyFont';
   src: url('./my-font.woff');

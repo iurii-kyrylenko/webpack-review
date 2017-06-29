@@ -42,10 +42,13 @@ const commonConfig = {
 const productionConfig = merge(
   commonConfig,
   parts.extractCSS({
-    use: {
-      loader: 'css-loader',
-      options: { modules: true }
-    }
+    use: [
+      {
+        loader: 'css-loader',
+        options: { modules: true }
+      },
+      parts.autoprefix()
+    ]
   })
 )
 
