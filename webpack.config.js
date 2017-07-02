@@ -8,44 +8,47 @@ const PATHS = {
   build: path.resolve(__dirname, 'build')
 }
 
-const commonConfig = {
-  entry: {
-    app: PATHS.app
-  },
-  output: {
-    path: PATHS.build,
-    filename: '[name].js'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(png|jpg|swg|gif)$/,
-        use: ['file-loader']
-      },
-      {
-        test: /\.(woff|woff2)$/,
-        use: ['file-loader']
-      },
-      {
-        test: /\.xml$/,
-        use: ['xml-loader']
-      }
+const commonConfig = merge(
+  {
+    entry: {
+      app: PATHS.app
+    },
+    output: {
+      path: PATHS.build,
+      filename: '[name].js'
+    },
+    module: {
+      rules: [
+        {
+          test: /\.xml$/,
+          use: ['xml-loader']
+        }
+      ]
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        title: 'Webpack Review'
+      })
     ]
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Webpack Review'
-    })
-  ]
-}
+  parts.loadFonts({ options: {
+    name: '[name].[hash].[ext]'
+  }})
+)
 
 const productionConfig = merge(
   commonConfig,
+  parts.loadImages({
+    options: {
+      limit: 5000,
+      name: '[name].[hash].[ext]'
+    }
+  }),
   parts.extractCSS({
     use: [
       {
         loader: 'css-loader',
-        options: { modules: true }
+        options: { modules: false }
       },
       parts.autoprefix()
     ]
@@ -54,7 +57,8 @@ const productionConfig = merge(
 
 const developmentConfig = merge(
   commonConfig,
-  parts.loadCSS(),
+  parts.loadImages(),
+  parts.loadCSS({ options: { modules: false } }),
   parts.devServer({
     host: process.env.HOST, // Defaults to 'localhost'
     port: process.env.PORT  // Defaults to 8080

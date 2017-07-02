@@ -28,7 +28,7 @@ exports.lintJavaScript = ({ include, exclude, options }) => ({
   }
 })
 
-exports.loadCSS = ({ include, exclude } = {}) => ({
+exports.loadCSS = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {
@@ -39,7 +39,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
           'style-loader',
           {
             loader: 'css-loader',
-            options: { modules: true }
+            options
           }
         ]
       }
@@ -74,6 +74,38 @@ exports.autoprefix = () => ({
   options: {
     plugins: () => [
       require('autoprefixer')()
+    ]
+  }
+})
+
+exports.loadImages = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg|svg|gif)$/,
+        include,
+        exclude,
+        use: {
+          loader: 'url-loader',
+          options
+        }
+      }
+    ]
+  }
+})
+
+exports.loadFonts = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(eot|ttf|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+        include,
+        exclude,
+        use: {
+          loader: 'file-loader',
+          options
+        }
+      }
     ]
   }
 })
